@@ -97,10 +97,10 @@ app.get('/', (req, res) => {
         var name = req.session.name;
         doc = doc.replace(`<div id="forms">`,
         `<div id="forms">Hello, ${name}
-        <form action="" method="get">
+        <form action="/members" method="get">
             <button>Go to members area</button>
         </form>
-        <form action="" method>
+        <form action="/logout" method="get">
             <button>Logout</button>
         </form>`);
     }
