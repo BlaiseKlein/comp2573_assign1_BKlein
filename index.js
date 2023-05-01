@@ -242,9 +242,11 @@ app.post('/loginsubmit', async (req, res) => {
 		    res.redirect('/members');
 		    return;
         } else {
-            console.log("incorrect password");
-            res.redirect("/login");
-            return;
+            html += "Invalid Email/password combination<br><a href=\"./login\">Try Again</a>";
+            res.send(html);
+            // console.log("incorrect password");
+            // res.redirect("/login");
+            // return;
         }
 
     }
