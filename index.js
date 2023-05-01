@@ -196,7 +196,7 @@ app.get('/login', (req, res) => {
     res.send(doc);
 });
 
-app.get('/loginsubmit', async (req, res) => {
+app.post('/loginsubmit', async (req, res) => {
     var email = req.body.email;
     var pw = req.body.password;
     var html = "";
