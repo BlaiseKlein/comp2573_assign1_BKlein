@@ -175,7 +175,6 @@ app.post('/signupSubmit', async (req, res) => {
         }
 
         var hashedPass = await bcrypt.hash(pw, encryptRounds);
-        // var hashedPass = pw;
 
         await userCollection.insertOne({username: name, email: email, password: hashedPass});
 	    console.log("Inserted user", + name + ","  + email + ","  + hashedPass);
@@ -222,8 +221,7 @@ app.post('/loginsubmit', async (req, res) => {
             return;
         }
 
-        // var hashedPass = await bcrypt.hash(pw, encryptRounds);
-        var hashedPass = pw;
+        var hashedPass = await bcrypt.hash(pw, encryptRounds);
 
         const result = await userCollection.find({email: email}).project({username: 1, email: 1, password: 1, _id: 1}).toArray();
         console.log(email + " " + hashedPass);
