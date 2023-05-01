@@ -175,6 +175,7 @@ app.post('/signupSubmit', async (req, res) => {
         }
 
         var hashedPass = await bcrypt.hash(pw, encryptRounds);
+        // var hashedPass = pw;
 
         await userCollection.insertOne({username: name, email: email, password: hashedPass});
 	    console.log("Inserted user", + name + ","  + email + ","  + hashedPass);
@@ -221,21 +222,24 @@ app.post('/loginsubmit', async (req, res) => {
             return;
         }
 
-        var hashedPass = await bcrypt.hash(pw, encryptRounds);
+        // var hashedPass = await bcrypt.hash(pw, encryptRounds);
+        var hashedPass = pw;
 
-        const result = await userCollection.find({email: email}).project({username: 1, password: 1, _id: 1}).toArray();
-
+        const result = await userCollection.find({email: email}).project({username: 1, email: 1, password: 1, _id: 1}).toArray();
+        console.log(email + " " + hashedPass);
+        console.log(result[0]);
         if (result.length != 1){
             res.redirect("/login");
             return;
         }
-        if (await bcrypt.compare(compare, result[0].hashedPass) && await bcrypt.compare(compare, result[0].email)){
+        if (await bcrypt.compare(hashedPass, result[0].password) && email == result[0].email){
             console.log("correct password");
 		    req.session.authenticated = true;
+            req.session.name = result[0].username;
 		    req.session.email = email;
 		    req.session.cookie.maxAge = expireTime;
 
-		    res.redirect('/loggedIn');
+		    res.redirect('/members');
 		    return;
         } else {
             console.log("incorrect password");
