@@ -1,0 +1,27 @@
+<%- include ("template/header") %>
+<div class="position-relative p-5">
+    <p class="position-absolute top-50 start-50 translate-middle fs-3">Login</p>
+</div>
+    <!-- <form action="/loginsubmit" method="post">
+        <input type="text" placeholder="email" name="email"/>
+        <input type="password" placeholder="password" name="password"/>
+        <input type="submit" value="submit"/>
+    </form> -->
+    <div class="container-fluid">
+    <form action="/loginsubmit" method="post">
+        <div class="row mb-3">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-5">
+            <input type="email" class="form-control" id="inputEmail3" name="email">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-5">
+            <input type="password" class="form-control" id="inputPassword3" name="password">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+    </div>
+<%- include ("template/footer") %>

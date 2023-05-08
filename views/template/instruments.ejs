@@ -1,0 +1,26 @@
+<% for (var i = 0; i < 3; i++) { %>
+    <% if (i == 0) { %>
+        <% var path = '/trumpet.jpg'; %>
+        <% var reference1 = 'https://unsplash.com/@halacious?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'; %>
+        <% var post = 'Hal Gatewood'; %>
+        <% var reference2 = 'https://unsplash.com/photos/fTPSm7KD_d0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'; %>
+    <% } else if (i == 1) { %>
+        <% var path = '/keyboard.jpg'; %>
+        <% var reference1 = 'https://unsplash.com/@nileane?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText';%>
+        <% var post = 'Niléane'; %>
+        <% var reference2 = 'https://unsplash.com/photos/-TxL1NXXvoM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'; %>
+    <% } else if (i == 2) { %>
+        <% var path = '/drum.jpg'; %>
+        <% var reference1 = 'https://unsplash.com/@paul_1865?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText';%>
+        <% var post = 'Paul Zoetemeijer'; %>
+        <% var reference2 = 'https://unsplash.com/photos/ekBOf6sJYYo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'; %>
+    <% } %>
+        <div class="card" style="width: 18rem;">
+        <img src="<%= path %>" class="card-img-top" alt="...">
+        <div class="card-body">
+            Photo by <a href="<%= reference1 %>"><%= post %></a> on <a href="<%= reference2 %>">Unsplash</a>
+        </div>
+        </div>
+
+
+<% } %>
