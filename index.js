@@ -85,32 +85,11 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-    let doc = fs.readFileSync("./index.html","utf-8");
-    console.log(req.session.authenticated);
-    if (req.session.authenticated == undefined ){
-        doc = doc.replace(`<div id="forms">`,
-        `<div id="forms"><p>Default page</p>
-        <form action="/signup" method="get">
-            <button>Signup</button>
-        </form>
-        <form action="/login" method="get">
-            <button>Login</button>
-        </form>`);
-    } else {
-        var name = req.session.name;
-        doc = doc.replace(`<div id="forms">`,
-        `<div id="forms">Hello, ${name}
-        <form action="/members" method="get">
-            <button>Go to members area</button>
-        </form>
-        <form action="/logout" method="get">
-            <button>Logout</button>
-        </form>`);
+    var authState = false;
+    if (req.session.authenticated != undefined){
+        authState = true;
     }
-
-    // res.send(doc);
-    
-    res.render("index", {auth: req.session.authenticated, name: req.session.name});
+    res.render("index", {auth: authState, name: req.session.name});
 });
 
 
@@ -136,7 +115,11 @@ app.get('/members', sessionValidation, (req, res) => {
         }
 
         // res.send(doc);
-        res.render("members", {name: req.session.name});
+        var authState = false;
+    if (req.session.authenticated != undefined){
+        authState = true;
+    }
+        res.render("members", {auth: authState, name: req.session.name});
         
     }
 });
@@ -154,7 +137,7 @@ app.post('/signupSubmit', async (req, res) => {
     var name = req.body.name;
     var user_type = "user";
     var html = "";
-    console.log(email, pw, name)
+    // console.log(email, pw, name)
 
     if (!email){
         // res.redirect('/signup?missing=1');
@@ -185,7 +168,7 @@ app.post('/signupSubmit', async (req, res) => {
         var hashedPass = await bcrypt.hash(pw, encryptRounds);
 
         await userCollection.insertOne({username: name, email: email, password: hashedPass, user_type: "user"});
-	    console.log("Inserted user", + name + ","  + email + ","  + hashedPass);
+	    // console.log("Inserted user", + name + ","  + email + ","  + hashedPass);
 
         req.session.authenticated = true;
         req.session.email = email;
@@ -203,8 +186,11 @@ app.get('/login', (req, res) => {
 
 
     // res.send(doc);
-
-    res.render("login");
+    var authState = false;
+    if (req.session.authenticated != undefined){
+        authState = true;
+    }
+    res.render("login", {auth: authState});
 });
 
 app.post('/loginsubmit', async (req, res) => {
@@ -235,8 +221,8 @@ app.post('/loginsubmit', async (req, res) => {
         var hashedPass = await bcrypt.hash(pw, encryptRounds);
 
         const result = await userCollection.find({email: email}).project({username: 1, email: 1, password: 1, user_type: 1, _id: 1}).toArray();
-        console.log(email + " " + hashedPass);
-        console.log(result[0]);
+        // console.log(email + " " + hashedPass);
+        // console.log(result[0]);
         if (result.length != 1){
             res.redirect("/login");
             return;
@@ -272,13 +258,14 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/admin", sessionValidation, adminAuthorization, async (req, res) => {
-    if (req.session.authenticated == undefined){
-        res.redirect("/login");
-    } else {
-        var userSet = await userCollection.find().toArray();
-        console.log(req.session.user_type);
-        res.render("admin", {type: req.session.user_type, users: userSet})
+    var userSet = await userCollection.find().toArray();
+    // console.log(req.session.user_type);
+    var authState = false;
+    if (req.session.authenticated != undefined){
+        authState = true;
     }
+    res.render("admin", {auth: authState, type: req.session.user_type, users: userSet})
+
 });
 
 app.post("/promote/:user", async (req, res) => {
@@ -300,11 +287,16 @@ app.use(express.static(__dirname + "/public"));
 
 app.get('*', (req, res) => {
     res.status(404);
-    res.send("There is no page here - 404");
+    // res.send("There is no page here - 404");
+    var authState = false;
+    if (req.session.authenticated != undefined){
+        authState = true;
+    }
+    res.render("404", {auth: authState});
 });
 
 app.listen(port, async () => {
     console.log("Launched on port " + port);
     var result = await userCollection.find().toArray();
-    console.log(result[0]);
+    // console.log(result[0]);
 });

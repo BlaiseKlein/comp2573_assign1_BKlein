@@ -1,11 +1,11 @@
-<%- include ("template/header") %>
+<%- include ("template/header", {auth: auth}); %>
 <div id="forms">
-    <p>Hello <%= name %></p>
+    <p class="fs-3">Hello <%= name %></p>
     <div class="card-group">
       <%- include ("template/instruments") %>
     </div>
         <form action="/logout" method="get">
-            <button>Sign out</button>
+            <button class="bg-warning btn m-2">Sign out</button>
         </form>
     </div>
 <%- include ("template/footer") %>

@@ -1,19 +1,8 @@
-<%- include ("template/header") %>
+<%- include ("template/header", {auth: auth}); %>
 
 <% if (type == "admin") { %>
     <p>Users</p>
-    <% for (var i = 0; i < users.length; i++){ %>
-        <div class="container-fluid">
-            <span><%= users[i].username %></span>
-            <span>(<%= users[i].user_type %>)</span>
-            <form action="/promote/<%= users[i].username %>" method="post">
-                <button class="btn btn-danger">Promote to Admin</button>
-            </form>            
-            <form action="/demote/<%= users[i].username %>" method="post">
-                <button class="btn btn-success">Demote to user</button>
-            </form>            
-        </div>
-    <% }%>
+    <%- include ("template/user", {users: users}); %>
 <% } %>
 
 <%- include ("template/footer") %>
