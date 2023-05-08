@@ -125,10 +125,12 @@ app.get('/members', sessionValidation, (req, res) => {
 });
 
 app.get('/signup', (req, res) => {
-    let doc = fs.readFileSync("./signup.html","utf-8");
-
+    var authState = false;
+    if (req.session.authenticated != undefined){
+        authState = true;
+    }
     // res.send(doc);
-    res.render("signup");
+    res.render("signup", {auth: authState});
 });
 
 app.post('/signupSubmit', async (req, res) => {
